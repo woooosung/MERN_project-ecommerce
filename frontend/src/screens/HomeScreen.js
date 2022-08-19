@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from '../components/Product';
 import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
 
 const reducer= (state, action) => { //by using reducer hook, we can depart state logic with component 
   switch(action.type){
@@ -45,9 +47,9 @@ function HomeScreen() {
         <h1>Featured Products</h1>
         <div className="products">
           {
-            loading ? (<div>Loading...</div>)
+            loading ? (<LoadingBox />)
             :
-            error ? (<div>{error}</div>)
+            error ? (<MessageBox variant="danger">{error}</MessageBox>)
             :
             (
               <Row>

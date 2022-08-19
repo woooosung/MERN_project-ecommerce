@@ -9,6 +9,9 @@ import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../utils";
 
 const reducer= (state, action) => { //by using reducer hook, we can depart state logic with component 
     switch(action.type){
@@ -37,15 +40,16 @@ function ProductScreen(){
             const result = await axios.get(`/api/products/slug/${slug}`); // by calling axios.get method, send ajax request to this url and store it in var 
             dispatch({type:'FETCH_SUCCESS', payload : result.data}) //result.data is data in backend
           } catch (error) {
-            dispatch({type: 'FETCH_FAIL', payload : error.message});
+            dispatch({type: 'FETCH_FAIL', payload : getError(error)});
           }
         };
         fetchData();
       },[slug])
 
     return (
-        loading ? (<div>Loading...</div>)
-        : error ? (<div>{error}</div>) 
+        loading ? (<LoadingBox />)
+        :
+        error ? (<MessageBox variant="danger">{error}</MessageBox>) 
         : (
         <div>
             <Row>
