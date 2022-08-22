@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import Row from 'react-bootstrap/Row';
@@ -46,7 +46,8 @@ function ProductScreen(){
         };
         fetchData();
       },[slug])
-      
+       
+      const navigate = useNavigate();
       const {state, dispatch: ctxDispatch} = useContext(Store);
       const {cart} = state;
       const addToCartHandler = async () => {
@@ -57,7 +58,8 @@ function ProductScreen(){
             window.alert('Sorry. Product is out of stock');
             return;
         }
-        ctxDispatch({type:'CART_ADD_ITEM', payload: {...product, quantity}})
+        ctxDispatch({type:'CART_ADD_ITEM', payload: {...product, quantity}});
+        navigate('/cart');
       }
 
     return ( 
