@@ -1,7 +1,12 @@
 import express from 'express';
 import data from './data.js';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 const app = express();
+const PORT = process.env.PORT || 8080;
+
+dotenv.config({path : 'config.env'});
 
 app.get('/api/products', (req, res) => {
     res.send(data.products) //send data to frontend
@@ -24,8 +29,8 @@ app.get('/api/products/:id', (req, res) => {
         res.status(404).send({ message : 'Product Not Found'});
     }    
 })
-const port = process.env.PORT || 8080;
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-})
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser : true, useUnifiedTopology:true})
+    .then(()=> app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`)))
+    .catch((error) => console.log(error.message))
+
